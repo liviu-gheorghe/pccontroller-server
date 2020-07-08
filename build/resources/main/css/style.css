@@ -1,6 +1,0 @@
-.split-pane *.split-pane-divider {
-    -fx-padding: 0 2.5 0 2.5;
-}
-*.split-pane-divider {
-    -fx-background-color:#fff;
-}
