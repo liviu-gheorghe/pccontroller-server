@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+}
+
+group 'pcc.pcc_server'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'net.glxn', name: 'qrgen', version: '1.4'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0-M1'
+    testCompile group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.7.0-M1'
+
+}
+
+javafx {
+    modules  = ['javafx.base','javafx.controls' , 'javafx.fxml' , 'javafx.graphics','javafx.swing']
+    version = '11.0.2'
+}
+
+application {
+    mainClassName = project.hasProperty("mainClass") ? getProperty("mainClass") : "pccontroller.Main"
+}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<class>
+
+<switch_tabs>
+    <action OS_ID="0">KEYCOMBINATION^18^9</action>
+    <action OS_ID="1">KEYCOMBINATION^18^9</action>
+    <action OS_ID="2">KEYCOMBINATION^18^9</action>
+</switch_tabs>
+
+<vol_up>
+    <action OS_ID="0">KEYPRESS^175</action>
+    <action OS_ID="1">xdotool^key^XF86AudioRaiseVolume</action>
+    <action OS_ID="2">xdotool^key^XF86AudioRaiseVolume</action>
+</vol_up>
+<vol_down>
+    <action OS_ID="0">KEYPRESS^174</action>
+    <action OS_ID="1">xdotool^key^XF86AudioLowerVolume</action>
+    <action OS_ID="2">xdotool^key^XF86AudioLowerVolume</action>
+</vol_down>
+<br_up>
+    <action OS_ID="0">cmd.exe^/c^%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\powershell.exe^-Command^(Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1,((Get-Ciminstance -Namespace root/WMI -ClassName WmiMonitorBrightness).CurrentBrightness)+10)</action>
+    <action OS_ID="1">xdotool^key^XF86MonBrightnessUp</action>
+    <action OS_ID="2">xdotool^key^XF86MonBrightnessUp</action>
+</br_up>
+<br_down>
+    <action OS_ID="0">cmd.exe^/c^%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\powershell.exe^-Command^(Get-WmiObject -Namespace root/WMI -Class WmiMonitorBrightnessMethods).WmiSetBrightness(1,((Get-Ciminstance -Namespace root/WMI -ClassName WmiMonitorBrightness).CurrentBrightness)-10)</action>
+    <action OS_ID="1">xdotool^key^XF86MonBrightnessDown</action>
+    <action OS_ID="2">xdotool^key^XF86MonBrightnessDown</action>
+</br_down>
+<key_left>
+    <action OS_ID="0">KEYPRESS^37</action>
+    <action OS_ID="1">KEYPRESS^37</action>
+    <action OS_ID="2">KEYPRESS^37</action>
+</key_left>
+<key_right>
+    <action OS_ID="0">KEYPRESS^39</action>
+    <action OS_ID="1">KEYPRESS^39</action>
+    <action OS_ID="2">KEYPRESS^39</action>
+</key_right>
+<key_up>
+    <action OS_ID="0">KEYPRESS^38</action>
+    <action OS_ID="1">KEYPRESS^38</action>
+    <action OS_ID="2">KEYPRESS^38</action>
+</key_up>
+<key_down>
+    <action OS_ID="0">KEYPRESS^40</action>
+    <action OS_ID="1">KEYPRESS^40</action>
+    <action OS_ID="2">KEYPRESS^40</action>
+</key_down>
+<key_enter>
+    <action OS_ID="0">KEYPRESS^10</action>
+    <action OS_ID="1">KEYPRESS^10</action>
+    <action OS_ID="2">KEYPRESS^10</action>
+</key_enter>
+
+</class>
