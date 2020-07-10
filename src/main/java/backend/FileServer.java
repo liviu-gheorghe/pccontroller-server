@@ -44,7 +44,7 @@ public class FileServer {
             fileServerSocket.close();
         }
         catch(IOException e) {
-            
+
         }
     }
 }
