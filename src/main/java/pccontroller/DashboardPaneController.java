@@ -1,6 +1,6 @@
 package pccontroller;
 
-import backend.ControllerServer;
+import backend.Server;
 import backend.QRCodeGenerator;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import util.NetworkInformation;
+import util.NetworkManager;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class DashboardPaneController implements Initializable {
 
     public void setQrCodeImage() {
         try {
-            BufferedImage qrCodeBufferedImage = QRCodeGenerator.generateQRCodeImage(NetworkInformation.getLanIpAddress()+","+App.HOSTNAME);
+            BufferedImage qrCodeBufferedImage = QRCodeGenerator.generateQRCodeImage(NetworkManager.getLanIpAddress()+","+App.HOSTNAME);
             Image qrCodeImage = SwingFXUtils.toFXImage(qrCodeBufferedImage,null);
             this.dashboardSceneImage.setFitHeight(300);
             this.dashboardSceneImage.setFitWidth(300);
@@ -63,7 +63,7 @@ public class DashboardPaneController implements Initializable {
 
     @FXML
     public void closeConnectionButtonClick() {
-        ControllerServer.getInstance().closeConnection(true);
+        Server.getInstance().getConnection().closeConnection();
     }
 
     @Override

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("When running ControllerServer")
-class ControllerServerTest extends TestCase {
+class ServerTest extends TestCase {
 
     @Test
     void controllerServerTest() {

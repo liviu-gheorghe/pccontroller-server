@@ -1,5 +1,6 @@
 package pccontroller;
 
+import backend.Server;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -9,7 +10,7 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class MainController implements Initializable {
 
     @FXML protected DashboardPaneController dashboardPaneController;
     @FXML protected  DevicePaneController devicePaneController;
@@ -22,13 +23,13 @@ public class Controller implements Initializable {
     @FXML public Button aboutButton;
     public Button[] menuButtons = new Button[4];
     private int current_pane = -1;
-    private static Controller INSTANCE = null;
+    private static MainController INSTANCE = null;
 
-    public Controller() {
+    public MainController() {
         INSTANCE = this;
     }
 
-    public static Controller getInstance() {
+    public static MainController getInstance() {
         return INSTANCE;
     }
 
@@ -83,6 +84,7 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
 
         SplitPane.setResizableWithParent(splitPane.getItems().get(0),false);
         menuButtons[0] = dashboardButton;

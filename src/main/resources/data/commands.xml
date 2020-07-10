@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<class>
-
+<root>
 <switch_tabs>
     <action OS_ID="0">KEYCOMBINATION^18^9</action>
     <action OS_ID="1">KEYCOMBINATION^18^9</action>
@@ -52,5 +51,4 @@
     <action OS_ID="1">KEYPRESS^10</action>
     <action OS_ID="2">KEYPRESS^10</action>
 </key_enter>
-
-</class>
+</root>

@@ -1,6 +1,7 @@
 package pccontroller;
 
-import backend.ActionDispatcher;
+import backend.DispatchedActionsCodes;
+import backend.Server;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
@@ -33,15 +34,15 @@ public class DevicePaneController {
 
     @FXML
     public void ringDeviceButtonClick() {
-        ActionDispatcher.getInstance().dispatchAction(1,"vb");
+        Server.getInstance().getConnection().dispatchAction(DispatchedActionsCodes.RING_DEVICE,"vb");
     }
 
     @FXML
     public void sendFileButtonClick() {
-        new Thread(() -> ActionDispatcher.getInstance().dispatchAction(8,"")).start();
+        new Thread(() -> Server.getInstance().getConnection().dispatchAction(DispatchedActionsCodes.SEND_FILE,"")).start();
     }
 
     @FXML private void sendPingButtonClick() {
-        ActionDispatcher.getInstance().dispatchAction(2,"");
+        Server.getInstance().getConnection().dispatchAction(DispatchedActionsCodes.SEND_PING,"");
     }
 }

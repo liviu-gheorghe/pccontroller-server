@@ -2,6 +2,18 @@ package util;
 
 public class OsDetector {
 
+
+    public static class UnrecognizedOsException extends Exception {
+
+    }
+
+    public static int getMachineOsId() throws UnrecognizedOsException {
+        if (OsDetector.isWindows()) return 0;
+        else if (OsDetector.isUnix()) return 1;
+        else if (OsDetector.isMac()) return 2;
+        throw new UnrecognizedOsException();
+    }
+
     private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
 
     public static boolean isWindows() {
@@ -15,4 +27,6 @@ public class OsDetector {
     public static boolean isMac() {
         return OS_NAME.contains("mac");
     }
+
+
 }

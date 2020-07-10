@@ -1,29 +1,33 @@
 package pccontroller;
 
 import util.OsDetector;
+import util.XMLUserDataLoader;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class App {
 
-    public static final int ACTION_SHARE_FILE = 8;
-    public static int OS_ID = -1;
+    public static int OS_ID;
     public static String HOSTNAME = "";
     public static boolean CONNECTION_ALIVE = false;
     public static String CONNECTED_DEVICE_NAME = "";
     public static String CONNECTED_DEVICE_IP = "";
 
+
     public static void onCreate() {
-        getMachineOs();
+        try {
+            OS_ID = OsDetector.getMachineOsId();
+        }
+        catch(OsDetector.UnrecognizedOsException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        XMLUserDataLoader.loadDefinedCommands();
         getMachineHostname();
     }
 
-    private static void getMachineOs() {
-        if (OsDetector.isWindows()) OS_ID = 0;
-        else if (OsDetector.isUnix()) OS_ID = 1;
-        else if (OsDetector.isMac()) OS_ID = 2;
-    }
 
     private static void getMachineHostname() {
         new Thread(
