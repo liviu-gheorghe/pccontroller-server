@@ -30,7 +30,6 @@ public class ActionReceiveFile implements Action {
                         StringBuilder fileNameStringBuilder = new StringBuilder();
                         for (byte filenameByte : filenameBytes) fileNameStringBuilder.append((char)filenameByte);
 
-                        System.out.println("Received file name : " + fileNameStringBuilder.toString());
                         File newFile = new File(System.getProperty("user.home")+"/Documents/"+fileNameStringBuilder.toString());
                         byte[] buffer = new byte[BUFFER_SIZE];
                         int numberOfBytes;
@@ -50,9 +49,7 @@ public class ActionReceiveFile implements Action {
                     }
                     long t2 = System.currentTimeMillis();
                     double seconds = (t2-t1)/1000.0;
-                    System.out.printf("Transferred %d bytes successfully , time = %fs\n",totalNumberOfBytes,seconds);
                     double transferSpeed = (totalNumberOfBytes/(1024*1024.0))/seconds;
-                    System.out.printf("Average transfer speed is : %f MB/s",transferSpeed);
                 }
         ).start();
     }
