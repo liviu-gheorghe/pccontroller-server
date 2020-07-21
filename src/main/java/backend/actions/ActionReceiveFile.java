@@ -5,12 +5,13 @@ import backend.FileServer;
 import backend.ReceivedActionsCodes;
 
 import java.io.*;
-import java.util.UUID;
 
 public class ActionReceiveFile implements Action {
 
     private final DataInputStream dataInputStream;
     private final int BUFFER_SIZE = 1024*40;
+
+
 
     public ActionReceiveFile(InputStream inputStream) {
         dataInputStream = new DataInputStream(inputStream);
@@ -22,9 +23,15 @@ public class ActionReceiveFile implements Action {
                 () -> {
                     int totalNumberOfBytes = 0;
                     long t1 = System.currentTimeMillis();
-                    String fileName = UUID.randomUUID().toString();
-                    File newFile = new File(String.format("/home/liviu/Documents/%s",fileName));
                     try {
+                        int filenameSize = dataInputStream.readInt();
+                        
+                        byte[] filenameBytes = dataInputStream.readNBytes(filenameSize);
+                        StringBuilder fileNameStringBuilder = new StringBuilder();
+                        for (byte filenameByte : filenameBytes) fileNameStringBuilder.append((char)filenameByte);
+
+                        System.out.println("Received file name : " + fileNameStringBuilder.toString());
+                        File newFile = new File(System.getProperty("user.home")+"/Documents/"+fileNameStringBuilder.toString());
                         byte[] buffer = new byte[BUFFER_SIZE];
                         int numberOfBytes;
                         FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -33,19 +40,10 @@ public class ActionReceiveFile implements Action {
                                 totalNumberOfBytes += numberOfBytes;
                                 fileOutputStream.write(buffer,0,numberOfBytes);
                             }
-                            //if(bytes % 1024*20 ==0) System.out.println(bytes/1024+" KB read so far");
                         }
                         fileOutputStream.close();
                     } catch (IOException exception) {
                         exception.printStackTrace();
-                        try {
-                            boolean status = newFile.delete();
-                            System.out.println("An error occurred during file transmission,trying to delete the file");
-                            System.out.println((status)?"Deleted successfully":"Error trying to delete the file");
-                        }
-                        catch(SecurityException e) {
-                            e.printStackTrace();
-                        }
                     }
                     finally {
                         FileServer.getInstance().clearConnection();
