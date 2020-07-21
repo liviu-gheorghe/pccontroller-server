@@ -78,8 +78,6 @@ public class Connection {
             while (true) {
                 byte type = dIn.readByte();
                 String content = dIn.readUTF();
-
-                System.out.println("Received : "+type + " "+ content);
                 new Thread(() -> actionHandler.handleAction(type, content)).start();
             }
         } catch (IOException e) {
@@ -90,7 +88,6 @@ public class Connection {
 
     public void closeConnection() {
         App.CONNECTION_ACCEPTED = false;
-        System.out.println("Closing connection");
         onDestroy();
         try {
             socket.close();

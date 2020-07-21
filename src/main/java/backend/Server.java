@@ -22,7 +22,6 @@ public class Server {
             serverSocket = new ServerSocket(port);
         }
         catch(IOException | NetworkManager.NoPortsAvailableException e) {
-            System.out.println("Line 26 in Server.java ");
             e.printStackTrace();
         }
     }
@@ -45,7 +44,6 @@ public class Server {
     private void listen() {
         try {
             Socket socket = serverSocket.accept();
-            System.out.println("Connection accepted");
             connection = new Connection(socket);
         } catch (IOException e) {
             e.printStackTrace();

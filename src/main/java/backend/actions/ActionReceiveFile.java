@@ -61,6 +61,4 @@ public class ActionReceiveFile implements Action {
     public int getActionType() {
         return ReceivedActionsCodes.ACTION_RECEIVE_FILE;
     }
-
-
 }
