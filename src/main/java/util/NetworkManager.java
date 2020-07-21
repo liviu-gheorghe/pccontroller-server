@@ -1,7 +1,5 @@
 package util;
 
-import pccontroller.App;
-
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
@@ -13,16 +11,16 @@ public class NetworkManager {
 
     public static void getNetworkInterfaces() throws SocketException {
         ArrayList<NetworkInterface> nets = Collections.list(NetworkInterface.getNetworkInterfaces());
-        System.out.println(String.format("Found %d network interfaces on this machine",nets.size()));
+        System.out.printf("Found %d network interfaces on this machine%n",nets.size());
         int count = 0;
         for (NetworkInterface iface : nets) {
-            System.out.println(String.format("Info for network interface no %d",count++));
-            System.out.println(String.format("Name : %s ",iface.getName()));
+            System.out.printf("Info for network interface no %d%n",count++);
+            System.out.printf("Name : %s %n",iface.getName());
 
             System.out.println("Inet Addresses : ");
             Enumeration<InetAddress> inetAddresses = iface.getInetAddresses();
             for(InetAddress inetAddress : Collections.list(inetAddresses)) {
-                System.out.println(String.format("Inet Address : %s",inetAddress));
+                System.out.printf("Inet Address : %s%n",inetAddress);
             }
             System.out.println("\n");
         }
@@ -74,7 +72,7 @@ public class NetworkManager {
             datagramSocket = new DatagramSocket(port);
             datagramSocket.setReuseAddress(true);
             return true;
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         } finally {
             if (datagramSocket != null) {
                 datagramSocket.close();
@@ -83,11 +81,10 @@ public class NetworkManager {
             if (serverSocket != null) {
                 try {
                     serverSocket.close();
-                } catch (IOException e) {
+                } catch (IOException ignored) {
                 }
             }
         }
-
         return false;
     }
 

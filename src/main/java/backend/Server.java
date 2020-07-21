@@ -1,18 +1,13 @@
 package backend;
 
-import pccontroller.App;
 import pccontroller.MainController;
-import util.ClipboardManager;
 import util.NetworkManager;
-
-import java.awt.*;
 import java.net.*;
 import java.io.*;
 
 public class Server {
 
     private static Server INSTANCE = null;
-    private MainController mainController = MainController.getInstance();
     private ServerSocket serverSocket;
     private Connection connection = null;
 
@@ -27,7 +22,7 @@ public class Server {
             serverSocket = new ServerSocket(port);
         }
         catch(IOException | NetworkManager.NoPortsAvailableException e) {
-            System.out.println("Line 27 in Server.java ");
+            System.out.println("Line 26 in Server.java ");
             e.printStackTrace();
         }
     }

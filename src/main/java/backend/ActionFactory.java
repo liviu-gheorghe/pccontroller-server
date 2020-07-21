@@ -12,6 +12,7 @@ public class ActionFactory {
         if(type==ACTION_EXECUTE_COMMAND) return new ActionExecuteCommand(content);
         if(type==ACTION_OPEN_LINK_IN_BROWSER) return new ActionOpenLink(content);
         if(type==ACTION_UPDATE_CLIPBOARD_CONTENT) return new ActionUpdateClipboardContent(content);
+        if(type == ACTION_RECEIVE_CONNECTION_REQUEST) return new ActionReceiveConnectionRequest(content);
         if(type==ACTION_RECEIVE_DEVICE_BATTERY_LEVEL) return new ActionReceiveBatteryLevel(content);
         if(type==ACTION_RECEIVE_DEVICE_OS_LEVEL) return new ActionReceiveDeviceOsLevel(content);
         if(type==ACTION_RECEIVE_DEVICE_VOLUME_LEVEL) return new ActionReceiveDeviceVolumeLevel(content);

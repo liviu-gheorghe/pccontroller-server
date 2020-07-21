@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class XMLUserDataLoader {
-    private static HashMap<String,String> commands = new HashMap<>();
+    private static final HashMap<String,String> commands = new HashMap<>();
 
     private static Document loadXMLCommandsDocument() {
         Document commandsDocument = null;

@@ -1,5 +1,6 @@
 package pccontroller;
 
+import backend.FileServer;
 import backend.Server;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +30,9 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         Server.setInstance();
+        FileServer.setInstance();
         new Thread(() -> Server.getInstance().startServer()).start();
+        new Thread(() -> FileServer.getInstance().startServer()).start();
         Text hostIpAddressText = (Text) scene.lookup("#hostIpAddress");
         if(hostIpAddressText != null) {
             hostIpAddressText.setText(NetworkManager.getLanIpAddress());

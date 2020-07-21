@@ -1,50 +1,62 @@
 package backend;
 
+import util.NetworkManager;
 import java.net.*;
 import java.io.*;
 
 public class FileServer {
 
+    private static FileServer INSTANCE = null;
     private ServerSocket fileServerSocket;
     private FileConnection fileConnection = null;
 
     public void clearConnection() {
         fileConnection = null;
+        new Thread(this::listen).start();
     }
 
-    public FileServer(int port) {
+    private FileServer() {
         try {
+            int port = NetworkManager.PortRange.getFirstAvailablePort();
             fileServerSocket = new ServerSocket(port);
         }
-        catch(IOException e) {
-            System.out.println("Line 27 in Server.java ");
+        catch(IOException | NetworkManager.NoPortsAvailableException e) {
             e.printStackTrace();
         }
     }
-    public FileConnection getFileConnection() {
+
+    public FileConnection getConnection() {
         return fileConnection;
     }
 
-    public void startFileServer() {
+    public static FileServer getInstance() {
+        return INSTANCE;
+    }
+
+    public static void setInstance() {
+        INSTANCE = new FileServer();
+    }
+
+    public void startServer() {
         listen();
     }
 
     private void listen() {
         try {
             Socket socket = fileServerSocket.accept();
-            System.out.println("File connection accepted");
+            System.out.println("File server connection accepted");
             fileConnection = new FileConnection(socket);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void stopFileServer() {
+    public void stopServer() {
         try {
             fileServerSocket.close();
         }
         catch(IOException e) {
-
+            //TODO
         }
     }
 }

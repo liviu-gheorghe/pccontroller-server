@@ -8,7 +8,8 @@ public class FileConnection {
     public FileConnection(Socket fileSocket) {
         try {
             DataInputStream inputStream = new DataInputStream(fileSocket.getInputStream());
-            Action action = ActionFactory.createAction(9,inputStream);
+            Action action = ActionFactory.createAction(ReceivedActionsCodes.ACTION_RECEIVE_FILE,inputStream);
+            if(action == null) return;
             action.execute();
         }
         catch(IOException e) {

@@ -2,6 +2,7 @@ package pccontroller;
 
 import backend.DispatchedActionsCodes;
 import backend.Server;
+import backend.actions.ActionReceiveConnectionRequest;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;

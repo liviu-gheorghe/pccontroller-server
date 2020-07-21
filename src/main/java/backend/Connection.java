@@ -2,21 +2,16 @@ package backend;
 
 import pccontroller.App;
 import pccontroller.MainController;
-import util.XMLUserDataLoader;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Socket;
-import java.util.HashMap;
 
 public class Connection {
 
-    private Socket socket;
-    private MainController mainController = MainController.getInstance();
+    private final Socket socket;
+    private final MainController mainController = MainController.getInstance();
     private DataInputStream inputStream;
-    private DataOutputStream outputStream;
     private Connection.ActionHandler actionHandler;
     private Connection.ActionDispatcher actionDispatcher;
 
@@ -28,7 +23,7 @@ public class Connection {
             inputStream = new DataInputStream(socket.getInputStream());
             actionHandler = new ActionHandler();
             new Thread(() -> listenForInput(inputStream)).start();
-            outputStream = new DataOutputStream(socket.getOutputStream());
+            DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
             actionDispatcher = new Connection.ActionDispatcher(outputStream);
             actionDispatcher.dispatchAction(0, App.HOSTNAME);
         }
@@ -43,7 +38,25 @@ public class Connection {
     }
 
     private void onCreate() {
+    }
 
+    public void onConnectionAccepted(String deviceName) {
+        new Thread(
+                () -> {
+                    try {
+                        mainController.getDashboardPaneController().getConnectedDeviceInfo().setText(deviceName);
+                        mainController.getDashboardPaneController().getCloseConnectionButton().setVisible(true);
+                        mainController.getDashboardPaneController().getConnectionInstructions().setText("");
+                    }
+                    catch(NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                    mainController.getDevicePaneController().getDeviceFullName().setText(deviceName);
+                    mainController.showPaneButton(1);
+                    mainController.getDashboardPaneController().setPhoneImage();
+                    App.CONNECTED_DEVICE_NAME = deviceName;
+                }
+        ).start();
     }
 
     private void onDestroy() {
@@ -65,6 +78,8 @@ public class Connection {
             while (true) {
                 byte type = dIn.readByte();
                 String content = dIn.readUTF();
+
+                System.out.println("Received : "+type + " "+ content);
                 new Thread(() -> actionHandler.handleAction(type, content)).start();
             }
         } catch (IOException e) {
@@ -74,6 +89,7 @@ public class Connection {
     }
 
     public void closeConnection() {
+        App.CONNECTION_ACCEPTED = false;
         System.out.println("Closing connection");
         onDestroy();
         try {
@@ -86,31 +102,28 @@ public class Connection {
     }
 
 
-    private class ActionHandler {
+    private static class ActionHandler {
 
         public void handleAction(int type, String content) {
             Action action = ActionFactory.createAction(type,content);
-            action.execute();
-        }
-        public void handleAction(int type, InputStream inputStream) {
-            Action action = ActionFactory.createAction(type,inputStream);
+            if(action == null) return;
             action.execute();
         }
     }
 
     private class ActionDispatcher {
 
-        private DataOutputStream dispatcherOutputStream = null;
+        private final DataOutputStream outputStream;
 
         private ActionDispatcher(DataOutputStream dOut) {
-            dispatcherOutputStream = dOut;
+            outputStream = dOut;
         }
 
         private void dispatchAction(int type,String content) {
             try {
-                dispatcherOutputStream.writeByte(type);
-                dispatcherOutputStream.writeUTF(content);
-                dispatcherOutputStream.flush();
+                outputStream.writeByte(type);
+                outputStream.writeUTF(content);
+                outputStream.flush();
             } catch (IOException e) {
                 closeConnection();
             }

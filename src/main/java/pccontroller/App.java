@@ -14,7 +14,7 @@ public class App {
     public static boolean CONNECTION_ALIVE = false;
     public static String CONNECTED_DEVICE_NAME = "";
     public static String CONNECTED_DEVICE_IP = "";
-
+    public static boolean CONNECTION_ACCEPTED = false;
 
     public static void onCreate() {
         try {
@@ -28,8 +28,9 @@ public class App {
         getMachineHostname();
     }
 
-
     private static void getMachineHostname() {
+
+        StringBuilder sb = new StringBuilder();
         new Thread(
                 () -> {
                     try {
@@ -37,7 +38,8 @@ public class App {
                         BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
                         String line;
                         while ((line = in.readLine()) != null)
-                            HOSTNAME += line;
+                            sb.append(line);
+                        HOSTNAME = sb.toString();
                         p.waitFor();
                     } catch (IOException | InterruptedException e) {
                         e.printStackTrace();

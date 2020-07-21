@@ -5,6 +5,7 @@ public class ReceivedActionsCodes {
     public static int ACTION_EXECUTE_COMMAND = 1;
     public static int ACTION_OPEN_LINK_IN_BROWSER = 2 ;
     public static int ACTION_UPDATE_CLIPBOARD_CONTENT = 3;
+    public static int ACTION_RECEIVE_CONNECTION_REQUEST = 4;
     public static int ACTION_RECEIVE_DEVICE_BATTERY_LEVEL = 5;
     public static int ACTION_RECEIVE_DEVICE_OS_LEVEL = 6;
     public static int ACTION_RECEIVE_DEVICE_VOLUME_LEVEL = 7;
