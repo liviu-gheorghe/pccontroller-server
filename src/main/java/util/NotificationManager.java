@@ -25,11 +25,9 @@ public class NotificationManager {
 
 class Driver {
     public static void main(String[] args) {
-
-
         System.out.println("Showing notification");
         try {
-            NotificationManager.showNotification("Maaai");
+            NotificationManager.showNotification("Hello there");
         }
         catch(Exception e) {
             e.printStackTrace();
