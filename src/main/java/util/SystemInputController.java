@@ -18,8 +18,6 @@ public class SystemInputController extends Robot {
 
     }
 
-
-
     public void mouseClick(int button) {
 
 
