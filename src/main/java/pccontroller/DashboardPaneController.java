@@ -63,7 +63,7 @@ public class DashboardPaneController implements Initializable {
 
     @FXML
     public void closeConnectionButtonClick() {
-        Server.getInstance().getConnection().closeConnection();
+        Server.getInstance().getLastConnection().closeConnection();
     }
 
     @Override

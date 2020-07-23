@@ -14,11 +14,13 @@ public class Connection {
     private DataInputStream inputStream;
     private Connection.ActionHandler actionHandler;
     private Connection.ActionDispatcher actionDispatcher;
+    private final String connectionID;
 
 
-    public Connection(Socket socket) {
-        onCreate();
+    public Connection(Socket socket,String connectionID) {
         this.socket = socket;
+        this.connectionID = connectionID;
+        onCreate();
         try {
             inputStream = new DataInputStream(socket.getInputStream());
             actionHandler = new ActionHandler();
@@ -38,6 +40,7 @@ public class Connection {
     }
 
     private void onCreate() {
+        System.out.println("Connection created , connection id is : "+connectionID);
     }
 
     public void onConnectionAccepted(String deviceName) {
@@ -54,7 +57,6 @@ public class Connection {
                     mainController.getDevicePaneController().getDeviceFullName().setText(deviceName);
                     mainController.showPaneButton(1);
                     mainController.getDashboardPaneController().setPhoneImage();
-                    App.CONNECTED_DEVICE_NAME = deviceName;
                 }
         ).start();
     }
@@ -89,7 +91,6 @@ public class Connection {
     }
 
     public void closeConnection() {
-        App.CONNECTION_ACCEPTED = false;
         System.out.println("Closing connection");
         onDestroy();
         try {
@@ -98,14 +99,14 @@ public class Connection {
         catch (IOException e) {
             e.printStackTrace();
         }
-        Server.getInstance().clearConnection();
+        Server.getInstance().clearConnection(connectionID);
     }
 
 
-    private static class ActionHandler {
+    private class ActionHandler {
 
         public void handleAction(int type, String content) {
-            Action action = ActionFactory.createAction(type,content);
+            Action action = ActionFactory.createAction(type,content,connectionID);
             if(action == null) return;
             action.execute();
         }
@@ -130,3 +131,12 @@ public class Connection {
         }
     }
 }
+
+
+
+
+
+
+
+
+

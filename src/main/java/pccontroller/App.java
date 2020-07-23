@@ -6,15 +6,15 @@ import util.XMLUserDataLoader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class App {
 
     public static int OS_ID;
     public static String HOSTNAME = "";
-    public static boolean CONNECTION_ALIVE = false;
-    public static String CONNECTED_DEVICE_NAME = "";
-    public static String CONNECTED_DEVICE_IP = "";
-    public static boolean CONNECTION_ACCEPTED = false;
+
+    public static ArrayList<String> connectedDevicesNames = new ArrayList<>();
+    public static ArrayList<String> connectedDevicesNamesIPS = new ArrayList<>();
 
     public static void onCreate() {
         try {

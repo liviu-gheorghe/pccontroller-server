@@ -4,15 +4,24 @@ import pccontroller.MainController;
 import util.NetworkManager;
 import java.net.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Server {
 
     private static Server INSTANCE = null;
     private ServerSocket serverSocket;
-    private Connection connection = null;
+    //private Connection connection = null;
+    //private final ArrayList<Connection> connections = new ArrayList<>();
+    private final HashMap<String,Connection> connections = new HashMap<>();
+    private String lastConnectionID;
 
-    public void clearConnection() {
-        connection = null;
+    public int getConnectionsCount() {
+        return connections.size();
+    }
+
+    public void clearConnection(String key) throws IndexOutOfBoundsException {
+        connections.remove(key);
         new Thread(this::listen).start();
     }
 
@@ -26,8 +35,13 @@ public class Server {
             e.printStackTrace();
         }
     }
-    public Connection getConnection() {
-        return connection;
+
+    public Connection getConnection(String key) throws IndexOutOfBoundsException {
+        return connections.get(key);
+    }
+
+    public Connection getLastConnection() {
+        return connections.get(lastConnectionID);
     }
 
     public static Server getInstance() {
@@ -44,10 +58,23 @@ public class Server {
 
     private void listen() {
         try {
-            Socket socket = serverSocket.accept();
-            System.out.println("Connection accepted");
-            connection = new Connection(socket);
-        } catch (IOException e) {
+                new Thread(
+                        () -> {
+                            try {
+                                Socket socket = serverSocket.accept();
+                                System.out.println("Connection accepted");
+                                String deviceAddress = socket.getInetAddress().getHostAddress();
+                                connections.put(deviceAddress,new Connection(socket,deviceAddress));
+                                lastConnectionID = deviceAddress;
+                                listen();
+                            }
+                            catch(Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                ).start();
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

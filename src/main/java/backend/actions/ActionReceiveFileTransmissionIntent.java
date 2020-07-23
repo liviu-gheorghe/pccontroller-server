@@ -9,15 +9,17 @@ import util.NetworkManager;
 public class ActionReceiveFileTransmissionIntent implements Action {
 
     private String data;
-    public ActionReceiveFileTransmissionIntent(String data) {
+    private String connectionID;
+    public ActionReceiveFileTransmissionIntent(String data,String connectionID) {
         this.data = data;
+        this.connectionID = connectionID;
     }
 
     @Override
     public void execute() {
         try {
             int port = NetworkManager.PortRange.getFirstAvailablePort();
-            Server.getInstance().getConnection().dispatchAction(DispatchedActionsCodes.SEND_PORT_NUMBER_FOR_FILE_TRANSMISSION,String.valueOf(port));
+            Server.getInstance().getConnection(connectionID).dispatchAction(DispatchedActionsCodes.SEND_PORT_NUMBER_FOR_FILE_TRANSMISSION,String.valueOf(port));
         } catch (NetworkManager.NoPortsAvailableException e) {
             e.printStackTrace();
         }

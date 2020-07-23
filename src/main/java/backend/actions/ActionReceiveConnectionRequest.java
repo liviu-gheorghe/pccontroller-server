@@ -11,12 +11,16 @@ import javafx.stage.Stage;
 import pccontroller.App;
 import pccontroller.Main;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class ActionReceiveConnectionRequest implements Action {
+
     String deviceName;
-    public ActionReceiveConnectionRequest(String deviceName) {
+    String connectionID;
+    public ActionReceiveConnectionRequest(String deviceName,String connectionID) {
         this.deviceName = deviceName;
+        this.connectionID = connectionID;
     }
     
     @Override
@@ -39,11 +43,14 @@ public class ActionReceiveConnectionRequest implements Action {
                 stage.setTitle("A device is trying to connect");
                 stage.setAlwaysOnTop(true);
                 stage.setResizable(false);
+
+                AtomicBoolean connectionAccepted = new AtomicBoolean(false);
+
                 stage.setOnHiding(
                         event -> {
-                            System.out.println("Dialog box exited , connection accepted : " + App.CONNECTION_ACCEPTED);
-                            if(!App.CONNECTION_ACCEPTED)
-                                Server.getInstance().getConnection().closeConnection();
+                            System.out.println("Dialog box exited , connection accepted : " + connectionAccepted);
+                            if(!connectionAccepted.get())
+                                Server.getInstance().getConnection(connectionID).closeConnection();
                         }
                 );
                 Text text = (Text) scene.lookup("#deviceRequestingConnectionName");
@@ -52,28 +59,32 @@ public class ActionReceiveConnectionRequest implements Action {
                 Button decline = (Button) scene.lookup("#declineConnectionButton");
                 accept.setOnMouseClicked(
                         event -> {
-                            App.CONNECTION_ACCEPTED = true;
-                            App.CONNECTED_DEVICE_NAME = deviceName;
-                            stage.close();
+                            connectionAccepted.set(true);
                             try {
-                                Server.getInstance().getConnection().dispatchAction(DispatchedActionsCodes.ACCEPT_CONNECTION,"");
-                                Server.getInstance().getConnection().onConnectionAccepted(deviceName);
+                                System.out.println("Sending connection acceptance message for connection id "+ connectionID);
+                                Server.getInstance().getConnection(connectionID).dispatchAction(DispatchedActionsCodes.ACCEPT_CONNECTION,"");
+                                Server.getInstance().getConnection(connectionID).onConnectionAccepted(deviceName);
                             }
                             catch(Exception e) {
                                 e.printStackTrace();
+                            }
+                            finally {
+                                stage.close();
                             }
                         }
                 );
                 decline.setOnMouseClicked(
                         event -> {
-                            App.CONNECTION_ACCEPTED = false;
+                            connectionAccepted.set(false);
                             try {
-                                Server.getInstance().getConnection().dispatchAction(DispatchedActionsCodes.DECLINE_CONNECTION,"");
+                                Server.getInstance().getConnection(connectionID).dispatchAction(DispatchedActionsCodes.DECLINE_CONNECTION,"");
                             }
                             catch(Exception e) {
                                 e.printStackTrace();
                             }
-                            stage.close();
+                            finally {
+                                stage.close();
+                            }
                         }
                 );
                 stage.show();

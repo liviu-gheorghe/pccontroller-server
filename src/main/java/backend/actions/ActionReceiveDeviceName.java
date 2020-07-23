@@ -27,7 +27,6 @@ public class ActionReceiveDeviceName implements Action {
                     mainController.getDevicePaneController().getDeviceFullName().setText(deviceName);
                     mainController.showPaneButton(1);
                     mainController.getDashboardPaneController().setPhoneImage();
-                    App.CONNECTED_DEVICE_NAME = deviceName;
                 }
         ).start();
     }

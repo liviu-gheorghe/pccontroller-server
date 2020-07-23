@@ -17,6 +17,8 @@ public class DevicePaneController {
     @FXML protected Text volumeLevel;
     @FXML protected Text osVersion;
 
+    private int connectionID;
+
     public Text getDeviceFullName() {
         return deviceFullName;
     }
@@ -35,15 +37,15 @@ public class DevicePaneController {
 
     @FXML
     public void ringDeviceButtonClick() {
-        Server.getInstance().getConnection().dispatchAction(DispatchedActionsCodes.RING_DEVICE,"vb");
+        Server.getInstance().getLastConnection().dispatchAction(DispatchedActionsCodes.RING_DEVICE,"vb");
     }
 
     @FXML
     public void sendFileButtonClick() {
-        new Thread(() -> Server.getInstance().getConnection().dispatchAction(DispatchedActionsCodes.SEND_FILE,"")).start();
+        new Thread(() -> Server.getInstance().getLastConnection().dispatchAction(DispatchedActionsCodes.SEND_FILE,"")).start();
     }
 
     @FXML private void sendPingButtonClick() {
-        Server.getInstance().getConnection().dispatchAction(DispatchedActionsCodes.SEND_PING,"");
+        Server.getInstance().getLastConnection().dispatchAction(DispatchedActionsCodes.SEND_PING,"");
     }
 }
