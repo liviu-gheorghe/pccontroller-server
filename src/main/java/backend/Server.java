@@ -4,15 +4,12 @@ import pccontroller.MainController;
 import util.NetworkManager;
 import java.net.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Server {
 
     private static Server INSTANCE = null;
     private ServerSocket serverSocket;
-    //private Connection connection = null;
-    //private final ArrayList<Connection> connections = new ArrayList<>();
     private final HashMap<String,Connection> connections = new HashMap<>();
     private String lastConnectionID;
 
@@ -22,8 +19,18 @@ public class Server {
 
     public void clearConnection(String key) throws IndexOutOfBoundsException {
         connections.remove(key);
+        checkIfThereAreStillConnections();
         new Thread(this::listen).start();
     }
+
+    public void checkIfThereAreStillConnections() {
+        if(getConnectionsCount() == 0) {
+            MainController.getInstance().switchToDisconnectedModeLayout();
+            MainController.getInstance().showPane(0);
+            MainController.getInstance().hidePaneButton(1);
+        }
+    }
+
 
     private Server() {
         try {

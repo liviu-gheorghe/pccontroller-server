@@ -7,7 +7,7 @@ public class Device {
     public String model="Unknown";
     public String osLevel="Unknown";
     public String ipAddress="Unknown";
-    public int connectionID = -1;
+    public String connectionID;
     public String description = "";
 
 
@@ -19,38 +19,41 @@ public class Device {
             device = new Device();
         }
 
-        public Device setFullName(String fullName) {
+        public DeviceBuilder setFullName(String fullName) {
             device.fullName = fullName;
-            return device;
+            return this;
         }
 
-        public Device setBrand(String brand) {
+        public DeviceBuilder setBrand(String brand) {
             device.brand = brand;
-            return device;
+            return this;
         }
 
-        public Device setModel(String model) {
+        public DeviceBuilder setModel(String model) {
             device.model = model;
-            return device;
+            return this;
         }
 
-        public Device setOsLevel(String osLevel) {
+        public DeviceBuilder setOsLevel(String osLevel) {
             device.osLevel = osLevel;
-            return device;
+            return this;
         }
 
-        public Device setIpAddress(String ipAddress) {
+        public DeviceBuilder setIpAddress(String ipAddress) {
             device.ipAddress = ipAddress;
-            return device;
+            return this;
         }
 
-        public Device setConnectionID(int connectionID) {
+        public DeviceBuilder setConnectionID(String connectionID) {
             device.connectionID = connectionID;
-            return device;
+            return this;
         }
 
-        public Device setDescription(String description) {
+        public DeviceBuilder setDescription(String description) {
             device.description = description;
+            return this;
+        }
+        public Device build() {
             return device;
         }
     }

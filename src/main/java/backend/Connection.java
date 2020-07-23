@@ -1,5 +1,6 @@
 package backend;
 
+import javafx.application.Platform;
 import pccontroller.App;
 import pccontroller.MainController;
 import java.io.DataInputStream;
@@ -44,8 +45,14 @@ public class Connection {
     }
 
     public void onConnectionAccepted(String deviceName) {
+
+        Device.DeviceBuilder deviceBuilder = new Device.DeviceBuilder();
+        Device device = deviceBuilder.setConnectionID(connectionID)
+                        .setFullName(deviceName)
+                        .build();
         new Thread(
                 () -> {
+                    /**
                     try {
                         mainController.getDashboardPaneController().getConnectedDeviceInfo().setText(deviceName);
                         mainController.getDashboardPaneController().getCloseConnectionButton().setVisible(true);
@@ -57,11 +64,21 @@ public class Connection {
                     mainController.getDevicePaneController().getDeviceFullName().setText(deviceName);
                     mainController.showPaneButton(1);
                     mainController.getDashboardPaneController().setPhoneImage();
+                     **/
+
+                    Platform.runLater(
+                            () -> {
+                                mainController.showPaneButton(1);
+                                mainController.switchToConnectedModeLayout();
+                                mainController.getDashboardPaneConnectedController().addDevice(device);
+                            }
+                    );
                 }
         ).start();
     }
 
     private void onDestroy() {
+        /**
         mainController.hidePaneButton(1);
         mainController.getDashboardPaneController().getCloseConnectionButton().setVisible(false);
         mainController.getDashboardPaneController().setQrCodeImage();
@@ -73,6 +90,7 @@ public class Connection {
         catch (IOException | NullPointerException exception) {
             exception.printStackTrace();
         }
+         **/
     }
 
     private void listenForInput(DataInputStream dIn) {
@@ -99,6 +117,7 @@ public class Connection {
         catch (IOException e) {
             e.printStackTrace();
         }
+        MainController.getInstance().getDashboardPaneConnectedController().removeDevice(connectionID);
         Server.getInstance().clearConnection(connectionID);
     }
 

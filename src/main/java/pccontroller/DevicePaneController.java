@@ -42,7 +42,8 @@ public class DevicePaneController {
 
     @FXML
     public void sendFileButtonClick() {
-        new Thread(() -> Server.getInstance().getLastConnection().dispatchAction(DispatchedActionsCodes.SEND_FILE,"")).start();
+        //new Thread(() -> Server.getInstance().getLastConnection().dispatchAction(DispatchedActionsCodes.SEND_FILE,"")).start();
+        MainController.getInstance().switchToConnectedModeLayout();
     }
 
     @FXML private void sendPingButtonClick() {
