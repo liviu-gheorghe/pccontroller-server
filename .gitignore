@@ -3,5 +3,6 @@
 /out
 /gradle
 /.gradle
-/lib
 /src/test
+/lib
+*.jar
