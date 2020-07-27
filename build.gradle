@@ -18,6 +18,7 @@ test {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'net.glxn', name: 'qrgen', version: '1.4'
+    compile group: 'org.controlsfx', name: 'controlsfx', version: '11.0.2'
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0-M1'
     testCompile group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.7.0-M1'
 
@@ -27,6 +28,7 @@ javafx {
     modules  = ['javafx.base','javafx.controls' , 'javafx.fxml' , 'javafx.graphics','javafx.swing']
     version = '11.0.2'
 }
+
 
 application {
     mainClassName = project.hasProperty("mainClass") ? getProperty("mainClass") : "pccontroller.Main"
