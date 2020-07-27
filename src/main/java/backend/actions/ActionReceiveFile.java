@@ -3,6 +3,12 @@ package backend.actions;
 import backend.Action;
 import backend.FileServer;
 import backend.ReceivedActionsCodes;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
 
 import java.io.*;
 import java.util.UUID;
@@ -55,6 +61,10 @@ public class ActionReceiveFile implements Action {
                     System.out.printf("Transferred %d bytes successfully , time = %fs\n",totalNumberOfBytes,seconds);
                     double transferSpeed = (totalNumberOfBytes/(1024*1024.0))/seconds;
                     System.out.printf("Average transfer speed is : %f MB/s",transferSpeed);
+                    Platform.runLater(
+                            ActionReceiveFile::showNotification
+                    );
+
                 }
         ).start();
     }
@@ -65,4 +75,15 @@ public class ActionReceiveFile implements Action {
     }
 
 
+
+    private static void showNotification() {
+        Notifications.create()
+                .title("Upload complete")
+                .text("File saved to /home/Documents")
+                .hideAfter(Duration.seconds(5))
+                .position(Pos.BOTTOM_RIGHT)
+                .onAction(event -> {
+                    //TODO
+                }).show();
+    }
 }
