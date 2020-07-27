@@ -41,7 +41,6 @@ public class ActionReceiveConnectionRequest implements Action {
                 stage.setResizable(false);
                 stage.setOnHiding(
                         event -> {
-                            System.out.println("Dialog box exited , connection accepted : " + App.CONNECTION_ACCEPTED);
                             if(!App.CONNECTION_ACCEPTED)
                                 Server.getInstance().getConnection().closeConnection();
                         }

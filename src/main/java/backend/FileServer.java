@@ -44,7 +44,6 @@ public class FileServer {
     private void listen() {
         try {
             Socket socket = fileServerSocket.accept();
-            System.out.println("File server connection accepted");
             fileConnection = new FileConnection(socket);
         } catch (IOException e) {
             e.printStackTrace();
