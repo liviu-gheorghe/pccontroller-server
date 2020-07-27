@@ -4,33 +4,48 @@ import backend.Action;
 import backend.FileServer;
 import backend.ReceivedActionsCodes;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
-import javafx.util.Duration;
-import org.controlsfx.control.Notifications;
-
+import pccontroller.App;
+import util.NotificationManager;
+import java.awt.*;
 import java.io.*;
-import java.util.UUID;
 
 public class ActionReceiveFile implements Action {
 
     private final DataInputStream dataInputStream;
     private final int BUFFER_SIZE = 1024*40;
+    private String PATH;
+    private String FILE_NAME;
 
     public ActionReceiveFile(InputStream inputStream) {
         dataInputStream = new DataInputStream(inputStream);
+        try {
+            PATH = System.getProperty("user.home")+"/Documents/";
+        }
+        catch(Exception e) {
+            NotificationManager.showNotification(
+                    "File transfer error",
+                    "The directory where the file should be saved does not exist or PC Controller is not allowed to access it",
+                    event -> {}
+            );
+        }
     }
 
     @Override
     public void execute() {
+        if(PATH == null) return;
         new Thread(
                 () -> {
                     int totalNumberOfBytes = 0;
                     long t1 = System.currentTimeMillis();
-                    String fileName = UUID.randomUUID().toString();
-                    File newFile = new File(String.format("/home/liviu/Documents/%s",fileName));
                     try {
+                        int filenameSize = dataInputStream.readInt();
+
+                        byte[] filenameBytes = dataInputStream.readNBytes(filenameSize);
+                        StringBuilder fileNameStringBuilder = new StringBuilder();
+                        for (byte filenameByte : filenameBytes) fileNameStringBuilder.append((char)filenameByte);
+
+                        FILE_NAME = fileNameStringBuilder.toString();
+                        File newFile = new File(PATH+FILE_NAME);
                         byte[] buffer = new byte[BUFFER_SIZE];
                         int numberOfBytes;
                         FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -39,32 +54,45 @@ public class ActionReceiveFile implements Action {
                                 totalNumberOfBytes += numberOfBytes;
                                 fileOutputStream.write(buffer,0,numberOfBytes);
                             }
-                            //if(bytes % 1024*20 ==0) System.out.println(bytes/1024+" KB read so far");
                         }
                         fileOutputStream.close();
                     } catch (IOException exception) {
                         exception.printStackTrace();
-                        try {
-                            boolean status = newFile.delete();
-                            System.out.println("An error occurred during file transmission,trying to delete the file");
-                            System.out.println((status)?"Deleted successfully":"Error trying to delete the file");
-                        }
-                        catch(SecurityException e) {
-                            e.printStackTrace();
-                        }
                     }
                     finally {
                         FileServer.getInstance().clearConnection();
                     }
                     long t2 = System.currentTimeMillis();
                     double seconds = (t2-t1)/1000.0;
-                    System.out.printf("Transferred %d bytes successfully , time = %fs\n",totalNumberOfBytes,seconds);
                     double transferSpeed = (totalNumberOfBytes/(1024*1024.0))/seconds;
-                    System.out.printf("Average transfer speed is : %f MB/s",transferSpeed);
-                    Platform.runLater(
-                            ActionReceiveFile::showNotification
+                    boolean isFileOpeningSupported = Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN);
+                    NotificationManager.showNotification(String.format(
+                            "Received file %s from %s.%s",
+                            FILE_NAME,
+                            App.CONNECTED_DEVICE_NAME,
+                            (isFileOpeningSupported ?  "Tap to open containing directory":"")
+                            ), "File saved in " + PATH,
+                            event -> {
+                                File targetDirectory =  new File(PATH);
+                                try {
+                                    if(isFileOpeningSupported) {
+                                        try {
+                                            new Thread(()-> {
+                                                try {
+                                                    Desktop.getDesktop().open(targetDirectory);
+                                                } catch (IOException exception) {
+                                                    exception.printStackTrace();
+                                                }
+                                            }).start();
+                                        } catch(Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }catch(Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
                     );
-
                 }
         ).start();
     }
@@ -72,18 +100,5 @@ public class ActionReceiveFile implements Action {
     @Override
     public int getActionType() {
         return ReceivedActionsCodes.ACTION_RECEIVE_FILE;
-    }
-
-
-
-    private static void showNotification() {
-        Notifications.create()
-                .title("Upload complete")
-                .text("File saved to /home/Documents")
-                .hideAfter(Duration.seconds(5))
-                .position(Pos.BOTTOM_RIGHT)
-                .onAction(event -> {
-                    //TODO
-                }).show();
     }
 }
