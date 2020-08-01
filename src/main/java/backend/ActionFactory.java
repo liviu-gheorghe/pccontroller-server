@@ -17,6 +17,10 @@ public class ActionFactory {
         if(type==ACTION_RECEIVE_DEVICE_OS_LEVEL) return new ActionReceiveDeviceOsLevel(content);
         if(type==ACTION_RECEIVE_DEVICE_VOLUME_LEVEL) return new ActionReceiveDeviceVolumeLevel(content);
         if(type==ACTION_RECEIVE_FILE_TRANSMISSION_INTENT) return new ActionReceiveFileTransmissionIntent(content);
+        if(type==ACTION_RECEIVE_MOUSE_MOVE) return new ActionReceiveMouseMove(content);
+        if(type==ACTION_RECEIVE_MOUSE_CLICK) return new ActionReceiveMouseClick(content);
+        if(type==ACTION_RECEIVE_MOUSE_SCROLL) return new ActionReceiveMouseScroll(content);
+
         return null;
     }
     public static Action createAction(int type,InputStream inputStream) {
