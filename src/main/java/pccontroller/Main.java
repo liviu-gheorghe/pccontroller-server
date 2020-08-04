@@ -8,6 +8,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -38,6 +39,7 @@ public class Main extends Application {
         notificationStage.show();
         App.NOTIFICATION_STAGE = notificationStage;
         primaryStage.show();
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/ic_launcher.png")));
         Server.setInstance();
         FileServer.setInstance();
         new Thread(() -> Server.getInstance().startServer()).start();
