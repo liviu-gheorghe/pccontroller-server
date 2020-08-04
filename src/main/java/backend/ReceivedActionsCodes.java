@@ -14,4 +14,5 @@ public class ReceivedActionsCodes {
     public static int ACTION_RECEIVE_MOUSE_MOVE = 10;
     public static int ACTION_RECEIVE_MOUSE_CLICK = 11;
     public static int ACTION_RECEIVE_MOUSE_SCROLL = 12;
+    public static int ACTION_RECEIVE_KEYBOARD_INPUT = 13;
 }
