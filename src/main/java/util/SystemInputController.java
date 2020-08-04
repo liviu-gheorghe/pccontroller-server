@@ -70,6 +70,12 @@ public class SystemInputController extends Robot {
         this.delay(100);
     }
 
+    public void sendKeystroke(int keycode,int delay) {
+        this.keyPress(keycode);
+        this.keyRelease(keycode);
+        this.delay(delay);
+    }
+
     public void sendKeyCombination(int[] keys) {
         for (int i=0;i<=keys.length-1;i++) {
             this.keyPress(keys[i]);
