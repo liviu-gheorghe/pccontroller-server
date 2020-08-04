@@ -14,22 +14,15 @@ public class ActionReceiveMouseClick implements Action {
 
     @Override
     public void execute() {
-        new Thread(
-                () -> {
-                    try {
-                        if(clickType == SystemInputController.DOUBLE_CLICK) {
-                            System.out.println("Executing double click");
-                            SystemInputController.getInstance().doubleClick();
-                        }
-                        else {
-                            System.out.printf("Executing click on button %d\n", clickType);
-                            SystemInputController.getInstance().mouseClick(clickType);
-                        }
-                    } catch (AWTException e) {
-                        e.printStackTrace();
-                    }
-                }
-        ).start();
+        try {
+            if(clickType == SystemInputController.DOUBLE_CLICK) {
+                SystemInputController.getInstance().doubleClick();
+            }
+            else {
+                SystemInputController.getInstance().mouseClick(clickType);
+            }
+        } catch (AWTException e) {
+        }
     }
 
     @Override

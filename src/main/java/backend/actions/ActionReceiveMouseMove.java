@@ -17,15 +17,11 @@ public class ActionReceiveMouseMove implements Action {
 
     @Override
     public void execute() {
-        new Thread(
-                () -> {
-                    try {
-                        SystemInputController.getInstance().moveMouseWithOffset(deltaX,deltaY);
-                    } catch (AWTException e) {
-                        e.printStackTrace();
-                    }
-                }
-        ).start();
+        try {
+            SystemInputController.getInstance().moveMouseWithOffset(deltaX,deltaY);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
