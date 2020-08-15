@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 public class App {
 
     public static int OS_ID;
+    public static String OS_NAME="";
     public static String HOSTNAME = "";
     public static boolean CONNECTION_ALIVE = false;
     public static String CONNECTED_DEVICE_NAME = "";
@@ -30,6 +31,7 @@ public class App {
             e.printStackTrace();
             System.exit(-1);
         }
+        OS_NAME = OsDetector.getMachineOsName();
         XMLUserDataLoader.loadDefinedCommands();
         getMachineHostname();
     }

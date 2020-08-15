@@ -39,7 +39,7 @@ public class Main extends Application {
         notificationStage.show();
         App.NOTIFICATION_STAGE = notificationStage;
         primaryStage.show();
-        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/ic_launcher.png")));
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/ic_logo.png")));
         Server.setInstance();
         FileServer.setInstance();
         new Thread(() -> Server.getInstance().startServer()).start();

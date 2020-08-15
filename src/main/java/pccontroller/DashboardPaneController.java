@@ -38,7 +38,7 @@ public class DashboardPaneController implements Initializable {
 
     public void setQrCodeImage() {
         try {
-            BufferedImage qrCodeBufferedImage = QRCodeGenerator.generateQRCodeImage(NetworkManager.getLanIpAddress()+","+App.HOSTNAME);
+            BufferedImage qrCodeBufferedImage = QRCodeGenerator.generateQRCodeImage(String.format("%s,%s,%s",NetworkManager.getLanIpAddress(),App.HOSTNAME,App.OS_NAME));
             Image qrCodeImage = SwingFXUtils.toFXImage(qrCodeBufferedImage,null);
             this.dashboardSceneImage.setFitHeight(300);
             this.dashboardSceneImage.setFitWidth(300);
@@ -57,7 +57,6 @@ public class DashboardPaneController implements Initializable {
             this.dashboardSceneImage.setImage(phoneImage);
         }
         catch (Exception e) {
-            //TODO
         }
     }
 

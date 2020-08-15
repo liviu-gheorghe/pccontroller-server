@@ -14,6 +14,13 @@ public class OsDetector {
         throw new UnrecognizedOsException();
     }
 
+    public static String getMachineOsName() {
+        if (OsDetector.isWindows()) return "windows";
+        else if (OsDetector.isUnix()) return "linux";
+        else if (OsDetector.isMac()) return "mac";
+        else return "";
+    }
+
     private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
 
     public static boolean isWindows() {
@@ -27,6 +34,7 @@ public class OsDetector {
     public static boolean isMac() {
         return OS_NAME.contains("mac");
     }
+
 
 
 }
